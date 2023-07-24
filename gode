@@ -1,0 +1,27 @@
+Sub SplitAndDeleteValues()
+    Dim lastRow As Long
+    Dim splitRange As Range
+    Dim cell As Range
+    
+    ' シートAをアクティブにする（必要に応じてシート名を変更してください）
+    Sheets("A").Activate
+    
+    ' A列の最終行を取得
+    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    
+    ' A列をカンマで区切る
+    Set splitRange = Range("A1:A" & lastRow)
+    For Each cell In splitRange
+        If InStr(cell.Value, ",") > 0 Then
+            Dim values As Variant
+            values = Split(cell.Value, ",")
+            cell.Resize(1, UBound(values) + 1).Value = values
+        End If
+    Next cell
+    
+    ' A列からAA列までの値を削除
+    Range("A:AA").ClearContents
+    
+    ' セル選択を解除
+    Application.CutCopyMode = False
+End Sub
